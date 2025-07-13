@@ -1,11 +1,9 @@
-import { device, context, canvas, mouse, time } from "../index";
+import { device, context, canvas, contextUniform } from "../index";
 import shader from "./post.wgsl" with {type: "text"};
 
 export class Post {
   pipeline: GPURenderPipeline;
 
-  uniformArray: Float32Array = new Float32Array(8);
-  uniformBuffer: GPUBuffer;
   uniformBindGroup: GPUBindGroup;
 
   frameBuffers: GPUTexture[] = [];
@@ -38,16 +36,11 @@ export class Post {
       }
     });
 
-    this.uniformBuffer = device.createBuffer({
-      size: this.uniformArray.byteLength,
-      usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
-    });
-
     this.uniformBindGroup = device.createBindGroup({
       layout: this.pipeline.getBindGroupLayout(0),
       entries: [{
         binding: 0,
-        resource: { buffer: this.uniformBuffer }
+        resource: { buffer: contextUniform.uniformBuffer }
       }]
     });
 
@@ -60,17 +53,7 @@ export class Post {
       this.resizeFrameBuffer();
     }
 
-    // update uniform
-    this.uniformArray[0] = canvas.width;
-    this.uniformArray[1] = canvas.height;
-    this.uniformArray[2] = mouse.ax;
-    this.uniformArray[3] = mouse.ay;
-    this.uniformArray[4] = mouse.rx;
-    this.uniformArray[5] = mouse.ry;
-    this.uniformArray[6] = time.now;
-    this.uniformArray[7] = time.delta;
-
-    device.queue.writeBuffer(this.uniformBuffer, 0, this.uniformArray);
+    device.queue.writeBuffer(contextUniform.uniformBuffer, 0, contextUniform.uniformArray);
 
     const commandEncoder = device.createCommandEncoder();
     const passEncoder = commandEncoder.beginRenderPass({

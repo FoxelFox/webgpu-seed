@@ -1,12 +1,10 @@
 {
   "scripts": {
-    "build": "bun build src/index.html --production --outdir=dist --chunk-naming [name].[ext]",
-    "watch": "bun build src/index.html --sourcemap --outdir=dist --chunk-naming [name].[ext] --watch"
+    "build": "bun run build.ts --minify",
+    "dev": "bun run build.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "dependencies": {
+    "@types/bun": "latest",
     "@webgpu/types": "^0.1.64"
   }
 }

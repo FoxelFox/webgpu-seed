@@ -1,10 +1,5 @@
-struct Context {
-  resolution: vec2<f32>,
-  mouse_abs: vec2<f32>,
-  mouse_rel: vec2<f32>,
-  time: f32,
-  delta: f32,
-}
+#import "hsl_to_rgb.wgsl"
+#import "../data/context.wgsl"
 
 @group(0) @binding(0) var <uniform> context: Context;
 @group(1) @binding(0) var prevFrameTexture: texture_2d<f32>;
@@ -29,14 +24,14 @@ struct FragmentOutput {
 fn main_fs(@builtin(position) pos: vec4<f32>) -> FragmentOutput {
 
   var p = (pos.xy / context.resolution - 0.5) * 2.0;
-  // Correct for the aspect ratio
   var ar = context.resolution.x / context.resolution.y;
   p.x *= ar;
 
-  var mouse = context.mouse_rel;
-  mouse.y /= ar;
+  let speed = 2.0 * sin(context.time) % 1;
+  let radius = 0.25 + sin(context.time) * 0.25 ;
+  let circle_pos = vec2(cos(context.time * speed), sin(context.time * speed)) * radius;
 
-  var d = distance(p, mouse * ar);
+  var d = distance(p, circle_pos * ar);
   if (d < 0.05) {
     d = 1.0;
   } else {
@@ -58,40 +53,3 @@ fn main_fs(@builtin(position) pos: vec4<f32>) -> FragmentOutput {
 }
 
 
-fn hsl_to_rgb(hue: f32, saturation: f32, lightness: f32) -> vec3<f32> {
-  let c = (1.0 - abs(2.0 * lightness - 1.0)) * saturation;
-  let h = hue / 60.0;
-  let x = c * (1.0 - abs(h % 2.0 - 1.0));
-  var r: f32;
-  var g: f32;
-  var b: f32;
-
-  if (h < 1.0) {
-    r = c;
-    g = x;
-    b = 0.0;
-  } else if (h < 2.0) {
-    r = x;
-    g = c;
-    b = 0.0;
-  } else if (h < 3.0) {
-    r = 0.0;
-    g = c;
-    b = x;
-  } else if (h < 4.0) {
-    r = 0.0;
-    g = x;
-    b = c;
-  } else if (h < 5.0) {
-    r = x;
-    g = 0.0;
-    b = c;
-  } else {
-    r = c;
-    g = 0.0;
-    b = x;
-  }
-
-  let m = lightness - c / 2.0;
-  return vec3<f32>(r + m, g + m, b + m);
-}
