@@ -1,15 +1,16 @@
 import { wgsl } from './wgsl-plugin';
 
-const minify = process.argv.includes('--minify');
+const isDev = process.argv.includes('--dev');
 
 const result = await Bun.build({
   entrypoints: ['./src/index.html'],
   outdir: './dist',
   plugins: [
-    wgsl({ minify })
+    wgsl({ minify: isDev})
   ],
   target: 'browser',
-  minify: minify,
+  minify: isDev,
+  sourcemap: isDev ? 'inline': undefined,
   naming: {
     chunk: '[name].[ext]'
   }

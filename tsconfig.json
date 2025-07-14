@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "ESNext",
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "node",
     "types": ["@webgpu/types", "@types/bun"],
   }
 }
