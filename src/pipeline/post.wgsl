@@ -12,9 +12,9 @@ fn main_vs(@builtin(vertex_index) i: u32) -> @builtin(position) vec4<f32> {
     vec2(-1.0, -1.0), vec2(1.0, -1.0), vec2(-1.0, 1.0),
     vec2(-1.0, 1.0), vec2(1.0, -1.0), vec2(1.0, 1.0),
   );
+
   return vec4(pos[i], 0.0, 1.0);
 }
-
 struct FragmentOutput {
   @location(0) colorForCanvas: vec4<f32>,
   @location(1) colorForTexture: vec4<f32>,
@@ -51,5 +51,3 @@ fn main_fs(@builtin(position) pos: vec4<f32>) -> FragmentOutput {
   output.colorForCanvas = mix(last, color, d);
   return output;
 }
-
-

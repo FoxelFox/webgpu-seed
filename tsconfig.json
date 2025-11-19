@@ -1,8 +1,11 @@
 {
-  "compilerOptions": {
+	"compilerOptions": {
 		"target": "ESNext",
 		"module": "ESNext",
-		"moduleResolution": "node",
-    "types": ["@webgpu/types", "@types/bun"],
-  }
+		"moduleResolution": "bundler",
+		"types": [
+			"@webgpu/types",
+			"@types/bun"
+		]
+	}
 }

@@ -12,24 +12,25 @@ export const mouse = gpu.mouse;
 export const time = gpu.time;
 export const contextUniform = new ContextUniform();
 
-
 const uniforms = [contextUniform];
 const pipelines = [new Post()];
 
 loop();
 
 // this has to be set after first render loop due to safari bug
-document.getElementsByTagName('canvas')[0].setAttribute('style', 'position: fixed;')
+document
+	.getElementsByTagName("canvas")[0]
+	.setAttribute("style", "position: fixed;");
 
 function loop() {
-  gpu.update();
+	gpu.update();
 
-  for(const uniform of uniforms) {
-    uniform.update();
-  }
+	for (const uniform of uniforms) {
+		uniform.update();
+	}
 
-  for(const pipeline of pipelines) {
-    pipeline.render();
-  }
-  requestAnimationFrame(loop);
+	for (const pipeline of pipelines) {
+		pipeline.render();
+	}
+	requestAnimationFrame(loop);
 }
