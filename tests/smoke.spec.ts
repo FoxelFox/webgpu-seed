@@ -12,7 +12,7 @@ import { collectConsole } from "./console-collector";
 // how long to keep the page alive after load so per-frame errors show up
 const SETTLE_MS = 1500;
 
-test("boot, screenshot, deduplicated console log", async ({ page }, testInfo) => {
+test("boot", async ({ page }, testInfo) => {
 	const consoleLog = collectConsole(page);
 
 	await page.goto("/", { waitUntil: "load" });
