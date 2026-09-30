@@ -9,7 +9,7 @@ fn hsl_to_rgb(hue: f32, saturation: f32, lightness: f32) -> vec3<f32> {
   let x = c * (1.0 - abs(h % 2.0 - 1.0));
   var r: f32;
   var g: f32;
-  var b: f32;
+  var b: f32
 
   if (h < 1.0) {
     r = c;
