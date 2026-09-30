@@ -1,5 +1,5 @@
 import { GPUContext } from "./gpu";
-import { Post } from "./pipeline/post";
+import { Paint } from "./pipeline/paint";
 import { ContextUniform } from "./data/context";
 
 export const gpu = new GPUContext();
@@ -13,7 +13,7 @@ export const time = gpu.time;
 export const contextUniform = new ContextUniform();
 
 const uniforms = [contextUniform];
-const pipelines = [new Post()];
+const pipelines = [new Paint()];
 
 loop();
 
